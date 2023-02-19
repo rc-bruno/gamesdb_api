@@ -1,4 +1,4 @@
-from constantes import URL_PESQUISA, URL_GAME_ID, URL_CONSOLES
+from gamesdb_api.constantes import URL_PESQUISA, URL_GAME_ID, URL_CONSOLES
 
 from typing import Union, List, Any
 from bs4 import BeautifulSoup

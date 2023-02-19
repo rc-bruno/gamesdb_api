@@ -1,3 +1,4 @@
 .idea/
 gamesdb_api/__pycache__/
 /setup.py
+gamesdb_api.egg-info/
