@@ -85,7 +85,7 @@ class TestClass:
         entrada = '100'
         esperado = 'Spider-Man 3'
 
-        resultado = GamesDB().get_game_by_id(entrada)[0]['game_title']
+        resultado = GamesDB().get_game_by_id(entrada)['game_title']
 
         assert resultado == esperado
 
@@ -93,7 +93,7 @@ class TestClass:
         entrada = "10000"
         esperado = {'not_found': '10000'}
 
-        resultado = GamesDB().get_game_by_id(entrada)[0]
+        resultado = GamesDB().get_game_by_id(entrada)
 
         assert resultado == esperado
 
@@ -131,7 +131,7 @@ class TestClass:
 
     def test_get_game_by_name_recebe_uma_str_retorna_uma_lista(self):
         entrada = 'Air Cavalry'
-        esperado = type([])
+        esperado = type({})
 
         resultado = type(GamesDB().get_game_by_name(entrada, 'Super Nintendo (SNES)'))
 

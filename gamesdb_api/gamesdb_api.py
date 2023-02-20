@@ -1,4 +1,4 @@
-from gamesdb_api.constantes import URL_PESQUISA, URL_GAME_ID, URL_CONSOLES
+from gamesdb_api.constantes import URL_PESQUISA, URL_GAME_ID, URL_CONSOLES, TYPE_GAME
 
 from typing import Union, List, Any
 from bs4 import BeautifulSoup
@@ -41,17 +41,18 @@ class GamesDB:
         # Retornando o dicionário 'consoles'
         return consoles
 
-    def get_game_by_id(self, number: Union[str, List[str]]) -> List[dict[str, Any]]:
+    def get_game_by_id(self, number: Union[str, List[str]]) -> Union[List[TYPE_GAME], TYPE_GAME]:
 
         """
 
         Este método busca informações sobre jogos pelo seu identificador (ID). Ele aceita o ID do jogo como uma
-        string única ou uma lista de IDs em formato de string. Retorna uma lista de dicionários contendo informações
-        sobre cada jogo especificado como argumento. Se um jogo não for encontrado, será retornado um dicionário com o
-        valor da (ID) para a chave 'not_found' para aquele jogo específico.
+        string única ou uma lista de IDs em formato de string. Retorna uma lista de dicionários, se foi buscado uma
+        lista de ids, ou um dicionário contendo informações sobre cada jogo especificado como argumento. Se um jogo
+        não for encontrado, será retornado um dicionário com o valor da (ID) para a chave 'not_found' para aquele
+        jogo específico.
 
-        :param number: Identificador do jogo (string) ou lista de identificadores de jogos.
-        :return: Lista de dicionários com informações sobre os jogos.
+        :param number: identificador do jogo (‘string’) ou lista de identificadores de jogos.
+        :return: dicionários ou lista de dicionários com informações sobre os jogos.
         """
 
         try:
@@ -85,12 +86,15 @@ class GamesDB:
                 else:
                     lista_games.append({'not_found': i})
                 contador += 1
+            # Se só tem um jogo na lista, vai retornar somente um dict
+            if len(lista_games) == 1:
+                return lista_games[0]
             return lista_games
         except TypeError as e:
             print(e)
             return False
 
-    def __scraping_game(self, number: str) -> dict[str, Union[str, List[str]]]:
+    def __scraping_game(self, number: str) -> TYPE_GAME:
         """
         Este método faz a raspagem de dados na página do jogo.
 
@@ -144,14 +148,14 @@ class GamesDB:
     def get_game_by_name(self, name: Union[str, List[str]], console: Union[str, int], system='') -> List[dict]:
         """
         Este método busca informações sobre jogos pelo seu nome. Ele aceita o nome do jogo como uma string única ou
-        uma lista de nomes em formato de string. Retorna uma lista de dicionários contendo informações sobre cada
-        jogo especificado como argumento. Se um jogo não for encontrado, será retornado um dicionário {"not_found":
-        nome_do_jogo} para aquele jogo específico.
+        uma lista de nomes em formato de string. Retorna uma lista de dicionários ou um dicionário contendo
+        informações sobre cada jogo especificado como argumento. Se um jogo não for encontrado, será retornado um
+        dicionário {"not_found": nome_do_jogo} para aquele jogo específico.
 
         :param name: Nome do jogo (string) ou lista de nomes de jogos.
         :param console: Nome do console ou identificador numérico do console.
         :param system: Região do jogo preferencial (ex: NTSC, PAL-M). Padrão é vazio.
-        :return: Lista de dicionários com informações sobre os jogos.
+        :return: dicionário ou lista de dicionários com informações sobre os jogos.
         """
 
         try:
@@ -191,6 +195,9 @@ class GamesDB:
                 else:
                     games.append(self.__scraping_game(id))
                 contador += 1
+            # Se só tem um jogo na lista, vai retornar somente um dict
+            if len(games) == 1:
+                return games[0]
             return games
         except TypeError as e:
             print(e)
