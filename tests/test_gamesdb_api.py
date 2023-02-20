@@ -136,4 +136,3 @@ class TestClass:
         resultado = type(GamesDB().get_game_by_name(entrada, 'Super Nintendo (SNES)', mostrar_progresso=True))
 
         assert resultado == esperado
-        
