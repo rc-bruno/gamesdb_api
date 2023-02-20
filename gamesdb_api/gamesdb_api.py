@@ -41,7 +41,8 @@ class GamesDB:
         # Retornando o dicionário 'consoles'
         return consoles
 
-    def get_game_by_id(self, number: Union[str, List[str]]) -> Union[List[TYPE_GAME], TYPE_GAME]:
+    def get_game_by_id(self, number: Union[str, List[str]], mostrar_progresso=False) -> Union[
+        List[TYPE_GAME], TYPE_GAME]:
 
         """
 
@@ -52,7 +53,11 @@ class GamesDB:
         jogo específico.
 
         :param number: identificador do jogo (‘string’) ou lista de identificadores de jogos.
+        :param mostrar_progresso: Controla se as informações de progresso devem ser exibidas durante a execução do
+        método. O padrão é False, o que significa que as informações de progresso não serão exibidas. Se definido
+        como True, as informações de progresso serão exibidas.
         :return: dicionários ou lista de dicionários com informações sobre os jogos.
+
         """
 
         try:
@@ -75,8 +80,9 @@ class GamesDB:
             contador = 1
             # Para cada id passada como argumento chame o método para extrair os dados do jogo
             for i in ids:
-                # Representação visual do andamento da extração de dados.
-                print(f'{contador} de {len(ids)}')
+                # Representação do progresso da extração de dados.
+                if mostrar_progresso:
+                    print(f'Extraindo informações: {contador} de {len(ids)}')
                 # Adiciona os dados a lista games
                 game_info = self.__scraping_game(i)
                 # Adiciona o dicionário game_info à lista games caso for um jogo valido
@@ -145,7 +151,8 @@ class GamesDB:
         dict_game['clearlogos'] = [x['href'] for x in html.find_all('a', attrs={'data-fancybox': 'clearlogos'})]
         return dict_game
 
-    def get_game_by_name(self, name: Union[str, List[str]], console: Union[str, int], system='') -> List[dict]:
+    def get_game_by_name(self, name: Union[str, List[str]], console: Union[str, int], system=''
+                         , mostrar_progresso=False) -> List[dict]:
         """
         Este método busca informações sobre jogos pelo seu nome. Ele aceita o nome do jogo como uma string única ou
         uma lista de nomes em formato de string. Retorna uma lista de dicionários ou um dicionário contendo
@@ -155,6 +162,9 @@ class GamesDB:
         :param name: Nome do jogo (string) ou lista de nomes de jogos.
         :param console: Nome do console ou identificador numérico do console.
         :param system: Região do jogo preferencial (ex: NTSC, PAL-M). Padrão é vazio.
+        :param mostrar_progresso: Controla se as informações de progresso devem ser exibidas durante a execução do
+        método. O padrão é False, o que significa que as informações de progresso não serão exibidas. Se definido
+        como True, as informações de progresso serão exibidas.
         :return: dicionário ou lista de dicionários com informações sobre os jogos.
         """
 
@@ -183,7 +193,9 @@ class GamesDB:
             contador = 1
             # Para cada nome, busca informações sobre o jogo
             for i in names:
-                print(f'{contador} de {len(names)} - {i}')
+                # Representação do progresso da extração de dados.
+                if mostrar_progresso:
+                    print(f'Procurando {contador} de {len(names)} - {i}')
                 name = self.__clear_name(i)
                 url_search = URL_PESQUISA.replace('<search>', name.replace(' ', '+')).replace('<id>', console)
                 resultados = self.__scraping_search(url_search)
@@ -204,7 +216,6 @@ class GamesDB:
             return False
 
     def __scraping_search(self, url_search: str) -> dict[int, str]:
-        print(url_search)
         saida = {}
         response = requests.get(url_search)
         html = BeautifulSoup(response.text, 'html.parser')

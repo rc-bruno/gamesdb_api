@@ -109,7 +109,7 @@ class TestClass:
         entrada = ['100', '101']
         esperado = 2
 
-        resultado = len(GamesDB().get_game_by_id(entrada))
+        resultado = len(GamesDB().get_game_by_id(entrada, mostrar_progresso=True))
 
         assert resultado == esperado
 
@@ -133,6 +133,7 @@ class TestClass:
         entrada = 'Air Cavalry'
         esperado = type({})
 
-        resultado = type(GamesDB().get_game_by_name(entrada, 'Super Nintendo (SNES)'))
+        resultado = type(GamesDB().get_game_by_name(entrada, 'Super Nintendo (SNES)', mostrar_progresso=True))
 
         assert resultado == esperado
+        
