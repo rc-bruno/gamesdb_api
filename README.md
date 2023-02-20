@@ -77,5 +77,5 @@ Retorna uma lista com um dicionário para jogo pesquisado.
 
 ### Nomes e códigos de consoles:
 
-    for name, id in gbd.codigo_console.items():
-	    print(f'{name}-{id}
+    >>> for name, id in gbd.codigo_console.items():
+    >>> print(f'{name}-{id}

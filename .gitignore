@@ -6,3 +6,5 @@ build/
 dist/
 .pypirc
 teste.py
+.coverage
+tests/__pycache__/
