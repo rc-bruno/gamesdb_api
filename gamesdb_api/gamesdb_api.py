@@ -265,7 +265,7 @@ class GamesDB:
         # Juntando as palavras da lista com o caracter '+' e convertendo para minúsculo
         return '+'.join(saida).lower()
 
-    def get_console_by_id(self, number: Union[int, str]) -> dict[str, str]:
+    def get_console_by_id(self, number: Union[int, str]) -> Union[dict[str, str], bool]:
         """
         Obtém informações de um console pelo ID. :param number: ID do console como inteiro ou string.
         :return: um dicionário contendo informações sobre o console, com chaves incluindo 'name',
@@ -300,3 +300,19 @@ class GamesDB:
                 dict_game['developer'] = x.text.replace('Developer: ', '')
 
         return dict_game
+
+    def get_console_by_name(self, name: str) -> Union[dict[str, str], bool]:
+        """
+        Obtém informações sobre um console pelo nome.
+        :param name: Nome do console como uma string.
+        :return: um dicionário contendo informações sobre o console, com chaves incluindo 'name',
+        'overview' e 'developer'. Retorna False se for passado uma string que não é número.
+        """
+        if not isinstance(name, str):
+            return False
+        try:
+            id = self.codigo_console[name]
+        except KeyError:
+            return False
+
+        return self.__scraping_console(id)

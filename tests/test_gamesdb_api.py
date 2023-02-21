@@ -152,3 +152,26 @@ class TestClass:
         resultado = GamesDB().get_console_by_id(entrada)
 
         assert resultado == esperado
+
+    def test_get_console_by_name_entrada_str_Acorn_Archimedes_esperado_resultado_name_Acorn_Archimedes(self):
+        entrada = 'Acorn Archimedes'
+
+        resultado = GamesDB().get_console_by_name(entrada)['name']
+
+        assert resultado == entrada
+
+    def test_get_console_by_name_entrada_str_test_esperado_False(self):
+        entrada = 'teste'
+        esperado = False
+
+        resultado = GamesDB().get_console_by_name(entrada)
+
+        assert resultado == esperado
+
+    def test_get_console_by_name_entrada_int_5_esperado_False(self):
+        entrada = 5
+        esperado = False
+
+        resultado = GamesDB().get_console_by_name(entrada)
+
+        assert resultado == esperado
