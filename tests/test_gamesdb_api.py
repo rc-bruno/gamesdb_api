@@ -144,3 +144,11 @@ class TestClass:
         resultado = GamesDB().get_console_by_id(entrada)['name']
 
         assert resultado == esperado
+
+    def test_get_console_by_id_entrada_str_teste_esperado_resultado_False(self):
+        entrada = 'teste'
+        esperado = False
+
+        resultado = GamesDB().get_console_by_id(entrada)
+
+        assert resultado == esperado

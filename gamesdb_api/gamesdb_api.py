@@ -269,9 +269,12 @@ class GamesDB:
         """
         Obtém informações de um console pelo ID. :param number: ID do console como inteiro ou string.
         :return: um dicionário contendo informações sobre o console, com chaves incluindo 'name',
-        'overview' e 'developer'.
+        'overview' e 'developer'. Retorna False se for passado uma string que não é número.
         """
         number = str(number)
+        # validar o número
+        if not number.isdigit():
+            return False
         console = self.__scraping_console(number)
         return console
 
