@@ -1,4 +1,4 @@
-from gamesdb_api.constantes import URL_PESQUISA, URL_GAME_ID, URL_CONSOLES, TYPE_GAME
+from gamesdb_api.constantes import *
 
 from typing import Union, List, Any
 from bs4 import BeautifulSoup
@@ -264,3 +264,36 @@ class GamesDB:
 
         # Juntando as palavras da lista com o caracter '+' e convertendo para minúsculo
         return '+'.join(saida).lower()
+
+    def get_console_by_id(self, number: Union[int, str]) -> dict[str, str]:
+        """
+        Obtém informações de um console pelo ID. :param number: ID do console como inteiro ou string.
+        :return: um dicionário contendo informações sobre o console, com chaves incluindo 'name',
+        'overview' e 'developer'.
+        """
+        number = str(number)
+        console = self.__scraping_console(number)
+        return console
+
+    def __scraping_console(self, number: str) -> dict[str, str]:
+        """
+        Raspa informações de um console pelo ID.
+        :param number: ID do console como uma string.
+        :return: um dicionário contendo informações sobre o console, com chaves incluindo 'name',
+        'overview' e 'developer'.
+        """
+        dict_game = {}
+        # criando a url com a 'id' do jogo.
+        url = URL_CONSOLE_ID.replace('<id>', number)
+        # Carregando a URL
+        response = requests.get(url)
+        html = BeautifulSoup(response.text, 'html.parser')
+        tag_p = html.find_all('p')
+        dict_game['id'] = number
+        dict_game['name'] = html.find('h1').text
+        dict_game['overview'] = tag_p[0].text.strip()
+        for x in tag_p:
+            if x.text.startswith('Developer: '):
+                dict_game['developer'] = x.text.replace('Developer: ', '')
+
+        return dict_game

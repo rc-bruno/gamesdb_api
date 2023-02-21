@@ -8,3 +8,4 @@ dist/
 teste.py
 .coverage
 tests/__pycache__/
+teste.py

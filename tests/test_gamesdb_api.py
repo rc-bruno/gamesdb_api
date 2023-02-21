@@ -76,12 +76,12 @@ class TestClass:
         assert resultado == esperado
 
     def test_get_consoles_retorna_um_dict(self):
-
         resultado = GamesDB()._GamesDB__get_consoles(URL_CONSOLES)
 
         assert isinstance(resultado, dict)
 
-    def test_get_game_by_id_quando_passado_o_str_100_retorna_uma_lista_com_uma_dict_com_title_igual_a_spider_man_3(self):
+    def test_get_game_by_id_quando_passado_o_str_100_retorna_uma_lista_com_uma_dict_com_title_igual_a_spider_man_3(
+            self):
         entrada = '100'
         esperado = 'Spider-Man 3'
 
@@ -134,5 +134,13 @@ class TestClass:
         esperado = type({})
 
         resultado = type(GamesDB().get_game_by_name(entrada, 'Super Nintendo (SNES)', mostrar_progresso=True))
+
+        assert resultado == esperado
+
+    def test_get_console_by_id_entrada_int_6_esperado_resultado_nome_Super_Nintendo_SNES(self):
+        entrada = 6
+        esperado = 'Super Nintendo (SNES)'
+
+        resultado = GamesDB().get_console_by_id(entrada)['name']
 
         assert resultado == esperado
