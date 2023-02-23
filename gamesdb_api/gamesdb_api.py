@@ -318,6 +318,13 @@ class GamesDB:
         return self.__scraping_console(id)
 
     def get_games_platform(self, number: int, mostrar_progresso=False) -> dict[str, str]:
+        """
+        Obtém informações sobre todos os jogos de um determinado console.
+
+        :param number: id do jogo
+        :param mostrar_progresso: mostrar com o print() um representação visual do andamento da tarefa.
+        :return: Dicionario com id e nome dos jogos.
+        """
         if not isinstance(number, int):
             return False
 
