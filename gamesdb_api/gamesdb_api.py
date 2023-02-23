@@ -316,3 +316,28 @@ class GamesDB:
             return False
 
         return self.__scraping_console(id)
+
+    def get_games_console(self, number: int, mostrar_progresso=False) -> dict[str, str]:
+        if not isinstance(number, int):
+            return False
+
+        dict_games = {}
+        pagina = 1
+
+        while True:
+            url = URL_CONSOLE_GAMES.replace('<id>', str(number))
+            response = requests.get(url.replace('<page>', str(pagina)))
+            html = BeautifulSoup(response.text, 'html.parser')
+            if html.find('h3'):
+                break
+            games = html.find_all('a')
+            for game in games:
+                if game['href'].startswith('./game.php?id='):
+                    dict_games[game['href'].replace('./game.php?id=', '')] = game.text.strip().split('\n')[0]
+
+            if mostrar_progresso:
+                print(".", sep='', end='')
+
+            pagina += 1
+
+        return dict_games
