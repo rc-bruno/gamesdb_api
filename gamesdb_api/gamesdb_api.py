@@ -317,7 +317,7 @@ class GamesDB:
 
         return self.__scraping_console(id)
 
-    def get_games_console(self, number: int, mostrar_progresso=False) -> dict[str, str]:
+    def get_games_platform(self, number: int, mostrar_progresso=False) -> dict[str, str]:
         if not isinstance(number, int):
             return False
 

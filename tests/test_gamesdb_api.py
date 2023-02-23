@@ -175,3 +175,19 @@ class TestClass:
         resultado = GamesDB().get_console_by_name(entrada)
 
         assert resultado == esperado
+
+    def test_get_games_plataform_passando_argumento_21_retorna_dict(self):
+        entrada = 21
+        esperado = dict
+
+        resultado = GamesDB().get_games_platform(entrada, mostrar_progresso=True)
+
+        assert type(resultado == esperado)
+
+    def test_get_games_platafrm_passando_argumento_str_retorna_False(self):
+        entrada = '21'
+        esperado = False
+
+        resultado = GamesDB().get_games_platform(entrada)
+
+        assert resultado == esperado
