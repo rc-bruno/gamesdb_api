@@ -1,17 +1,16 @@
 from gamesdb_api.constantes import *
 
-from typing import Union, List, Any
+from typing import Union, List, Dict
 from bs4 import BeautifulSoup
 import requests
 from fuzzywuzzy import process
 
 
 class GamesDB:
-
     def __init__(self):
         self.codigo_console = self.__get_consoles(URL_CONSOLES)
 
-    def __get_consoles(self, url: str) -> dict[str, str]:
+    def __get_consoles(self, url: str) -> Dict[str, str]:
 
         """
         Este método acessa a página de consoles e retorna um dicionário contendo o identificador e o nome dos consoles.
@@ -215,7 +214,7 @@ class GamesDB:
             print(e)
             return False
 
-    def __scraping_search(self, url_search: str) -> dict[int, str]:
+    def __scraping_search(self, url_search: str) -> Dict[int, str]:
         saida = {}
         response = requests.get(url_search)
         html = BeautifulSoup(response.text, 'html.parser')
@@ -226,7 +225,7 @@ class GamesDB:
 
         return saida
 
-    def __busca(self, resultados: dict[int, str], search: str) -> str:
+    def __busca(self, resultados: Dict[int, str], search: str) -> str:
 
         """
         Este método realiza uma busca para identificar o melhor resultado de um jogo conforme os resultados
@@ -265,7 +264,7 @@ class GamesDB:
         # Juntando as palavras da lista com o caracter '+' e convertendo para minúsculo
         return '+'.join(saida).lower()
 
-    def get_console_by_id(self, number: Union[int, str]) -> Union[dict[str, str], bool]:
+    def get_console_by_id(self, number: Union[int, str]) -> Union[Dict[str, str], bool]:
         """
         Obtém informações de um console pelo ID. :param number: ID do console como inteiro ou string.
         :return: um dicionário contendo informações sobre o console, com chaves incluindo 'name',
@@ -278,7 +277,7 @@ class GamesDB:
         console = self.__scraping_console(number)
         return console
 
-    def __scraping_console(self, number: str) -> dict[str, str]:
+    def __scraping_console(self, number: str) -> Dict[str, str]:
         """
         Raspa informações de um console pelo ID.
         :param number: ID do console como uma string.
@@ -301,7 +300,7 @@ class GamesDB:
 
         return dict_game
 
-    def get_console_by_name(self, name: str) -> Union[dict[str, str], bool]:
+    def get_console_by_name(self, name: str) -> Union[Dict[str, str], bool]:
         """
         Obtém informações sobre um console pelo nome.
         :param name: Nome do console como uma string.
@@ -317,7 +316,7 @@ class GamesDB:
 
         return self.__scraping_console(id)
 
-    def get_games_platform(self, number: int, mostrar_progresso=False) -> dict[str, str]:
+    def get_games_platform(self, number: int, mostrar_progresso=False) -> Dict[str, str]:
         """
         Obtém informações sobre todos os jogos de um determinado console.
 
