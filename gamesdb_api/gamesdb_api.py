@@ -1,9 +1,9 @@
 from gamesdb_api.constantes import *
 
-from typing import Union, List, Dict
 from bs4 import BeautifulSoup
 import requests
 from fuzzywuzzy import process
+from typing import Union, List, Dict
 
 
 class GamesDB:
@@ -21,7 +21,6 @@ class GamesDB:
 
         # Dicionário de saída
         consoles = {}
-        # Fazendo a requisição da página
         response = requests.get(url)
         # Criando o objeto BeautifulSoup para parsear o código HTML
         soup = BeautifulSoup(response.text, 'html.parser')
@@ -81,7 +80,7 @@ class GamesDB:
             for i in ids:
                 # Representação do progresso da extração de dados.
                 if mostrar_progresso:
-                    print(f'Extraindo informações: {contador} de {len(ids)}')
+                    print(f'\rExtraindo informações: {contador} de {len(ids)}', end='', flush=True)
                 # Adiciona os dados a lista games
                 game_info = self.__scraping_game(i)
                 # Adiciona o dicionário game_info à lista games caso for um jogo valido
@@ -194,7 +193,7 @@ class GamesDB:
             for i in names:
                 # Representação do progresso da extração de dados.
                 if mostrar_progresso:
-                    print(f'Procurando {contador} de {len(names)} - {i}')
+                    print(f'\rProcurando {contador} de {len(names)} - {i}', end='', flush=True)
                 name = self.__clear_name(i)
                 url_search = URL_PESQUISA.replace('<search>', name.replace(' ', '+')).replace('<id>', console)
                 resultados = self.__scraping_search(url_search)
@@ -342,7 +341,7 @@ class GamesDB:
                     dict_games[game['href'].replace('./game.php?id=', '')] = game.text.strip().split('\n')[0]
 
             if mostrar_progresso:
-                print(".", sep='', end='')
+                print(f"\r Jogos encontrados: {len(dict_games)} - Aguarde!", end='', flush=True)
 
             pagina += 1
 
